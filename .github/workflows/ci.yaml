@@ -37,8 +37,7 @@ jobs:
             --volume "${{github.workspace}}:/workspace"
           install: |
             apt-get update -y
-            apt-get install -y build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools \ 
-              libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev python3-pip
+            apt-get install -y build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools               libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev python3-pip
             curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
             . $HOME/.poetry/env
             poetry install       
