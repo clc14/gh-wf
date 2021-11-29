@@ -1,12 +1,13 @@
 name: CI
 
-on:
-  push:
-    branches:
-      - master
-      - v2.*
-  pull_request:
-    types: [opened, synchronize, reopened, edited]
+# on:
+#   push:
+#     branches:
+#       - master
+#       - v2.*
+#   pull_request:
+#     types: [opened, synchronize, reopened, edited]
+on: [push, pull_request]
 
 env:
   LANG: C.UTF-8
