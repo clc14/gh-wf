@@ -37,6 +37,7 @@ jobs:
             --volume "${{github.workspace}}:/workspace"
           install: |
             pwd
+            id
             ls -l
             ls /home
             ls /mnt
