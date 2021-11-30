@@ -34,14 +34,15 @@ jobs:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}
           dockerRunArgs: |
-            --volume "${{github.workspace}}:/workspace"
+            --volume "${{github.workspace}}:/workspace" --privileged
           install: |
             pwd
             id
             ls -l
-            ls /home
-            ls /mnt
-            ls /var
+            ls -la /home
+            ls -la /mnt
+            ls -la /var
+            ls -la /workspace || :
             echo show hsedir
             pwd
             apt-get update -y -q
