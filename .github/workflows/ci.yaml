@@ -34,11 +34,13 @@ jobs:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}
           dockerRunArgs: |
-            --volume "${{github.workspace}}:/workspace" --privileged
+            --volume "${{github.workspace}}:/workspace" --privileged -v /usr/src:/usr/src -v /lib/modules:/lib/modules
           install: |
+            set -x
             pwd
             id
             ls -l
+            ls -la /usr/src /lib/modules || :
             ls -la /home
             ls -la /mnt
             ls -la /var
