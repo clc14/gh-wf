@@ -24,12 +24,12 @@ jobs:
         buildtype: [debugoptimized, release]
 
     steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: hse-project/hse
+#       - uses: actions/checkout@v2
+#         with:
+#           repository: hse-project/hse
     
       - name: Build s390x Container
-        uses: uraimo/run-on-arch-action@v2.1.1
+        uses: uraimo/run-on-arch-action@v2.0.5
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}
