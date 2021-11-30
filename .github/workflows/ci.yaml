@@ -15,7 +15,7 @@ env:
 
 jobs:
   architectures:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04 # must be set to the latest linux vm so it always run on the bare host
     strategy:
       fail-fast: false
       matrix:
@@ -37,7 +37,7 @@ jobs:
             mkdir -p "${PWD}/artifacts"
           # Mount the artifacts directory as /artifacts in the container
           dockerRunArgs: |
-            --volume "${PWD}/artifacts:/artifacts"
+            --volume "${PWD}/artifacts:/artifacts" -v "${{github.workspace}}:/workspace" 
           install: |
             set -x
             pwd
