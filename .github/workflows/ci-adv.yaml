@@ -66,6 +66,25 @@ jobs:
             touch /workspace/.testfile && ls -al /workspace || :
             cp $(which git) "/artifacts/${artifact_name}"
             echo "Produced artifact at /artifacts/${artifact_name}"
+            
+      - uses: uraimo/run-on-arch-action@v2.0.5
+        name: Run poetry
+        id: run_poetry
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
+
+          # Not required, but speeds up builds
+          githubToken: ${{ github.token }}
+
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}/artifacts:/artifacts" 
+            --volume "${{github.workspace}}:/workspace" 
+          run: |
+            ls -la /artifacts /workspace || true
+            command -v git
+
       - name: Show the artifact
         # Items placed in /artifacts in the container will be in
         # ${PWD}/artifacts on the host.
