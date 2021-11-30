@@ -38,9 +38,10 @@ jobs:
           install: |
             pwd
             ls -l
-            cd /workspace
+            ls /home
+            ls /mnt
+            ls /var
             echo show hsedir
-            ls -l
             pwd
             apt-get update -y -q
             apt-get install -y -q curl build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev python3-pip libffi-dev python3-dev cargo
