@@ -33,7 +33,7 @@ jobs:
 
           # Mount the artifacts directory as /artifacts in the container
           dockerRunArgs: |
-            --volume "${PWD}/artifacts:/artifacts" -v "${{github.workspace}}:/workspace" 
+            --volume "${PWD}/artifacts:/artifacts" --volume "${{github.workspace}}:/workspace" 
 
           # Pass some environment variables to the container
           env: | # YAML, but pipe character is necessary
