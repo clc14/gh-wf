@@ -15,6 +15,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.1.0
+        with:
+          repository: hse-project/hse
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build artifact
         id: build
@@ -31,7 +33,7 @@ jobs:
 
           # Mount the artifacts directory as /artifacts in the container
           dockerRunArgs: |
-            --volume "${PWD}/artifacts:/artifacts"
+            --volume "${PWD}/artifacts:/artifacts" -v "${{github.workspace}}:/workspace" 
 
           # Pass some environment variables to the container
           env: | # YAML, but pipe character is necessary
@@ -49,8 +51,16 @@ jobs:
           install: |
             case "${{ matrix.distro }}" in
               ubuntu*|jessie|stretch|buster|bullseye)
+                ls /workspace
+                cd /workspace
                 apt-get update -q -y
                 apt-get install -q -y git
+                apt-get install -y -q curl build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev python3-pip libffi-dev python3-dev cargo
+                python3 -m pip install --user setuptools_rust
+                python3 -m pip install --user poetry
+                export PATH="$HOME/.local/bin:$HOME/.poetry/bin:$PATH"
+                pwd
+                poetry install
                 ;;
               fedora*)
                 dnf -y update
@@ -72,3 +82,4 @@ jobs:
         # ${PWD}/artifacts on the host.
         run: |
           ls -al "${PWD}/artifacts"
+          ls -al /workspace
