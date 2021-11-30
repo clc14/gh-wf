@@ -15,8 +15,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.1.0
-        with:
-          repository: hse-project/hse
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build artifact
         id: build
@@ -30,15 +28,12 @@ jobs:
           # Create an artifacts directory
           setup: |
             mkdir -p "${PWD}/artifacts"
-
           # Mount the artifacts directory as /artifacts in the container
           dockerRunArgs: |
-            --volume "${PWD}/artifacts:/artifacts" 
-
+            --volume "${PWD}/artifacts:/artifacts"
           # Pass some environment variables to the container
           env: | # YAML, but pipe character is necessary
             artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
-
           # The shell to run commands with in the container
           shell: /bin/sh
 
@@ -51,18 +46,9 @@ jobs:
           install: |
             case "${{ matrix.distro }}" in
               ubuntu*|jessie|stretch|buster|bullseye)
-                set -x
-                ls -la /artifacts 
-                ls /workspace ||:
-                cd /workspace ||:
+                ls -al /artifacts || ls -al artifacts || ls -al $PWD/artifacts 
                 apt-get update -q -y
                 apt-get install -q -y git
-                apt-get install -y -q curl build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev python3-pip libffi-dev python3-dev cargo
-                python3 -m pip install --user setuptools_rust
-                python3 -m pip install --user poetry
-                export PATH="$HOME/.local/bin:$HOME/.poetry/bin:$PATH"
-                pwd
-                poetry install
                 ;;
               fedora*)
                 dnf -y update
@@ -73,15 +59,12 @@ jobs:
                 apk add git
                 ;;
             esac
-
           # Produce a binary artifact and place it in the mounted volume
           run: |
             cp $(which git) "/artifacts/${artifact_name}"
             echo "Produced artifact at /artifacts/${artifact_name}"
-
       - name: Show the artifact
         # Items placed in /artifacts in the container will be in
         # ${PWD}/artifacts on the host.
         run: |
           ls -al "${PWD}/artifacts"
-          ls -al /workspace
