@@ -36,6 +36,8 @@ jobs:
           dockerRunArgs: |
             --volume "${{github.workspace}}:/workspace"
           install: |
+            pwd
+            ls -l
             cd /workspace
             echo show hsedir
             ls -l
