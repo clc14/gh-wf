@@ -34,9 +34,9 @@ jobs:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}
           dockerRunArgs: |
-            --volume "${{github.workspace}}/../../:/workspace"
+            --volume "${{github.workspace}}:/workspace"
           install: |
-            cd hse
+            cd /workspace
             echo show hsedir
             ls -l
             pwd
