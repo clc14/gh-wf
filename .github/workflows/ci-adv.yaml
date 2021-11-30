@@ -30,7 +30,8 @@ jobs:
             mkdir -p "${PWD}/artifacts"
           # Mount the artifacts directory as /artifacts in the container
           dockerRunArgs: |
-            --volume "${PWD}/artifacts:/artifacts"
+            --volume "${PWD}/artifacts:/artifacts" 
+            --volume "${{github.workspace}}:/workspace" 
           # Pass some environment variables to the container
           env: | # YAML, but pipe character is necessary
             artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
@@ -46,9 +47,8 @@ jobs:
           install: |
             case "${{ matrix.distro }}" in
               ubuntu*|jessie|stretch|buster|bullseye)
-                ls -al /artifacts || ls -al artifacts || ls -al $PWD/artifacts 
-                apt-get update -q -y
-                apt-get install -q -y git
+                apt-get update -qq -y
+                apt-get install -qq -y git
                 ;;
               fedora*)
                 dnf -y update
@@ -61,6 +61,9 @@ jobs:
             esac
           # Produce a binary artifact and place it in the mounted volume
           run: |
+            set -x 
+            ls -al /artifacts || ls -al artifacts || ls -al $PWD/artifacts || :
+            touch /workspace/.testfile && ls -al /workspace || :
             cp $(which git) "/artifacts/${artifact_name}"
             echo "Produced artifact at /artifacts/${artifact_name}"
       - name: Show the artifact
