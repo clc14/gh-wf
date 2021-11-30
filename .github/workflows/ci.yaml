@@ -34,7 +34,7 @@ jobs:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}
           dockerRunArgs: |
-            --volume "${{github.workspace}}:/workspace" --privileged -v /usr/src:/usr/src -v /lib/modules:/lib/modules
+            -v "${{github.workspace}}:/workspace" -v /usr/src:/usr/src -v /lib/modules:/lib/modules
           install: |
             set -x
             pwd
