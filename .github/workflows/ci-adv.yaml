@@ -51,8 +51,10 @@ jobs:
           install: |
             case "${{ matrix.distro }}" in
               ubuntu*|jessie|stretch|buster|bullseye)
-                ls /workspace
-                cd /workspace
+                set -x
+                ls -la /artifacts 
+                ls /workspace ||:
+                cd /workspace ||:
                 apt-get update -q -y
                 apt-get install -q -y git
                 apt-get install -y -q curl build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev python3-pip libffi-dev python3-dev cargo
