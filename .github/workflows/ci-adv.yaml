@@ -81,6 +81,7 @@ jobs:
             apt-get update >/dev/null && apt-get install time cmake gawk cython python3-toml python3-pytoml -y 
             time poetry run meson builddir -Dbuildtype=${{ matrix.buildtype }}  -Dycsb=true
             python3 -m pip install -U toml
+            export PYTHONPATH=/usr/lib/python3/dist-packages/pip:/root/.local/lib/python3.8/site-packages/pip:$PYTHONPATH
             time poetry run meson builddir -Dbuildtype=${{ matrix.buildtype }}  -Dycsb=true
 
             time poetry run ninja -C builddir
