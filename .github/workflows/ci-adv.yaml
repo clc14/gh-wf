@@ -73,6 +73,8 @@ jobs:
             set +eu
             cd /workspace
             export PATH="$HOME/.local/bin:$HOME/.poetry/bin:$PATH"
+            python3 -m pip install meson
+            python3 -m pip install ninja
             ls -la /root/.local/bin
             apt-get update >/dev/null && apt-get install bash time -y >/dev/null
             time poetry run $HOME/.local/bin/meson builddir -Dbuildtype=${{ matrix.buildtype }} --fatal-meson-warnings -Dycsb=true
