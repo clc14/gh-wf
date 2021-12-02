@@ -12,6 +12,7 @@ jobs:
         include:
           - arch: s390x
             distro: ubuntu20.04
+            buildtype: release
 
     steps:
       - uses: actions/checkout@v2.1.0
@@ -72,6 +73,7 @@ jobs:
             set -x
             set +eu
             cd /workspace
+            echo $PATH
             export PATH="$HOME/.local/bin:$HOME/.poetry/bin:$PATH"
             python3 -m pip install -U --user meson
             python3 -m pip install -U --user ninja
