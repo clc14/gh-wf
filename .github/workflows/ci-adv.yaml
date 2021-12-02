@@ -51,7 +51,7 @@ jobs:
             case "${{ matrix.distro }}" in
               ubuntu*|jessie|stretch|buster|bullseye)
                 apt-get update -qq -y
-                apt-get install -qq -y git curl libxslt1-dev libxml2-dev python3-lxml cython3 python3-pytest-cython python3-toml python3-cryptography build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev python3-pip libffi-dev python3-dev cargo
+                apt-get install -qq -y git curl libxslt1-dev libxml2-dev python3-lxml cmake cython3 python3-pytest-cython python3-toml python3-cryptography build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev python3-pip libffi-dev python3-dev cargo
                 python3 -m pip install --user setuptools_rust
                 python3 -m pip install --user poetry
                 export PATH="$HOME/.local/bin:$HOME/.poetry/bin:$PATH"
@@ -78,7 +78,7 @@ jobs:
             python3 -m pip install -U --user meson
             python3 -m pip install -U --user ninja
             ls -la /root/.local/bin
-            apt-get update >/dev/null && apt-get install time -y >/dev/null
+            apt-get update >/dev/null && apt-get install time cmake -y >/dev/null
             time poetry run meson builddir -Dbuildtype=${{ matrix.buildtype }}  -Dycsb=true
             time poetry run ninja -C builddir
             time poetry run meson test -C /workspace/builddir --setup=ci --print-errorlogs --no-stdsplit
