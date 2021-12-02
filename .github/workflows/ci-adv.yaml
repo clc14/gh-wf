@@ -50,7 +50,7 @@ jobs:
             case "${{ matrix.distro }}" in
               ubuntu*|jessie|stretch|buster|bullseye)
                 apt-get update -qq -y
-                apt-get install -qq -y git curl python3-cryptography build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev python3-pip libffi-dev python3-dev cargo
+                apt-get install -qq -y git curl libxslt1-dev libxml2-dev python3-lxml cython3 python3-pytest-cython python3-toml python3-cryptography build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev python3-pip libffi-dev python3-dev cargo
                 python3 -m pip install --user setuptools_rust
                 python3 -m pip install --user poetry
                 export PATH="$HOME/.local/bin:$HOME/.poetry/bin:$PATH"
