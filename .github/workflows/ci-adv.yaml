@@ -82,7 +82,7 @@ jobs:
             apt-get install -y build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools
             apt-get install -y libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev
             time poetry run meson builddir -Dbuildtype=${{ matrix.buildtype }}  -Dycsb=true
-            python3 -m pip install -U toml
+            python3 -m pip install -U --user toml
             export PYTHONPATH=/usr/lib/python3/dist-packages/pip:/root/.local/lib/python3.8/site-packages/pip:$PYTHONPATH
             time poetry run meson builddir -Dbuildtype=${{ matrix.buildtype }}  -Dycsb=true
 
