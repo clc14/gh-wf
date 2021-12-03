@@ -1,5 +1,6 @@
 on: [push, pull_request]
-
+env:
+  MESON_TESTTHREADS: 1
 jobs:
   build_job:
     # The host should always be linux
@@ -52,12 +53,9 @@ jobs:
               ubuntu*|jessie|stretch|buster|bullseye)
                 apt-get update -qq -y
                 apt-get install -qq -y git curl libxslt1-dev libxml2-dev python3-lxml cmake cython3 python3-pytest-cython python3-toml python3-cryptography build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev python3-pip libffi-dev python3-dev cargo
-                python3 -m pip install --user setuptools_rust
-                python3 -m pip install --user poetry
-                export PATH="$HOME/.local/bin:$HOME/.poetry/bin:$PATH"
-                git clone https://github.com/hse-project/hse.git
-                cd hse
-                poetry install                
+                apt-get install time cmake gawk cython python3-toml python3-pytoml -y 
+                apt-get install -y build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools
+                apt-get install -y libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev            
                 ;;
               fedora*)
                 dnf -y update
@@ -78,15 +76,15 @@ jobs:
             python3 -m pip install -U meson
             python3 -m pip install -U ninja
             ls -la /root/.local/bin
-            apt-get update >/dev/null && apt-get install time cmake gawk cython python3-toml python3-pytoml -y 
-            apt-get install -y build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev python3-setuptools
-            apt-get install -y libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev
-            time poetry run meson builddir -Dbuildtype=${{ matrix.buildtype }}  -Dycsb=true
-            python3 -m pip install -U toml
             export PYTHONPATH=/usr/lib/python3/dist-packages/pip:/root/.local/lib/python3.8/site-packages/pip:$PYTHONPATH
             time meson builddir -Dbuildtype=${{ matrix.buildtype }}  -Dycsb=true
             time ninja -C builddir
             time meson test -C /workspace/builddir --setup=ci --print-errorlogs --no-stdsplit
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: build-artifact-ubuntu-${{ matrix.image-tag }}-${{ matrix.build_type }}
+          path: builddir/meson-logs/
       - name: Show the artifact
         # Items placed in /artifacts in the container will be in
         # ${PWD}/artifacts on the host.
